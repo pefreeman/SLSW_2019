@@ -11,6 +11,7 @@ This workshop is made possible thanks to the support of
 Preliminary Schedule for the 2019 Statistical Learning Summer Workshop
 ---
 
+| Date | Time | Topics |
 |----|----|----|
 | Monday (24 June) | 09:00 AM - 09:30 AM | Welcome and Orientation |
 |                  | 09:30 AM - 11:30 AM | Lectures: Statistical Learning, Data Science, R, Vectors (+ Lab 1) |
@@ -47,5 +48,4 @@ Preliminary Schedule for the 2019 Statistical Learning Summer Workshop
 |                     | 10:15 AM - 11:30 AM | Poster Office Hours |
 |                     | 11:30 AM - 01:00 PM | Lunch (+ Poster Printing) |
 |                     | 01:00 PM - 02:00 PM | Public Poster Presentation |
-|----|----|----|
 
