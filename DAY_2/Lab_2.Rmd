@@ -1,0 +1,163 @@
+---
+title: "Lab 2: Model Assessment"
+author: "Peter Freeman (2019 SLSW)"
+date: "26 June 2019"
+output: 
+  html_document:
+    toc: true
+    toc_float: true
+    theme: spacelab
+---
+
+## "Random" Sampling
+
+As noted in lecture, a key component of reproducible research is setting the "random number seed" before calling functions that sample data randomly. (If you don't set it, `R` will set it itself by looking at the date and time, etc.) Such functions include
+
+- `sample()`: sample from a specified vector, usually integers, and usually with uniform weights
+- `rnorm()`, etc.: sample from a particular distribution with particular parameter settings...for more information, see [this web page](http://cran.r-project.org/web/views/Distributions.html)
+- `randomForest()`: as you will see, the random forest algorithm involves (a lot of) random sampling!
+- etc.
+
+*Always set a seed before sampling.*
+
+1. Referring back to lecture notes, set a random number seed, then call `sample()` twice; each time, request five draws from the vector `1:10`. Then reset the random number seed using the same value you used initially, and make a third call to `sample()`, requesting five draws from the vector `1:10`. If all goes according to plan, the outputs of the first and third calls should be identical.
+```{r}
+# FILL ME IN
+```
+
+---
+
+## Data Splitting and k-Fold Cross Validation
+
+We are going to use random sampling to perform data splitting, i.e., to populate training and test datasets. But first we need a dataset:
+```{r}
+df = read.csv("https://raw.githubusercontent.com/pefreeman/PSU_2019/master/PhotoZ.csv")
+dim(df)
+names(df)
+```
+As you can see from the output of `dim()`, we have 8 measurements made for each of 10,000 subjects (in this case, galaxies). The first six columns are the predictors: magnitudes, or logarithmic measures of brightness, in a number of bandpasses spanning the optical regime: `u` for "ultraviolet" to `y` for who-knows-what (but it is in the near-infrared). Depending on the analysis, the response is either the `redshift` (a proxy measurement for physical distance) or `mstar` (the stellar mass of the galaxy, in base-10 logarithmic units representing solar masses; e.g., 9 is one billion solar masses). Here we'll pick `redshift`:
+```{r}
+predictors = df[,1:6]   # can be done via dplyr select() also
+response   = df[,7]     # ibid
+```
+
+2. Split both the predictors and the response in two. Call the outputs `pred.train` and `pred.test`, and `resp.train` and `resp.test`. Use `sample()` to draw the row numbers that define the training set. Use whatever splitting percentages you wish, so long as the training set gets at least 50% of the data. Recall that if you have a vector `s` that you use to subset a vector `x` (via `x[s]`), then you can output all the elements of `x` *not in s* by writing `x[-s]`. (This applies to `dplyr` slicing as well as "square-bracket subsetting".)
+```{r}
+# FILL ME IN
+```
+
+---
+
+To perform $k$-fold cross-validation instead of data splitting, we need to assign each datum to one of $k$ different "folds." A fold is just a group of data, nothing more, with the groups numbered 1 to $k$. To assign data to folds, utilize the following: `sample(k,nrow(df),replace=TRUE)`. Let's say `nrow(df)` is 10,000 and `k` is 5: the output will be a vector of length 10,000 with each element between 1 and 5 inclusive: 1, 4, 3, 4, 2, 2, 1, 5, ...
+
+3. Set the random number seed and create the vector `folds` that will hold the output from your sampling. For `k`, use 5 or 10.
+```{r}
+# FILL ME IN
+```
+
+---
+
+OK, at this point you have training and test datasets, *and* you have $k$ folds. Let's apply both in a linear regression setting. You haven't officially learned linear regression yet, so I'll provide the pseudocode below; you should just have to copy and paste.
+
+In a data splitting context, the sequence of calls is the following:
+```
+out.lm = lm(resp.train~.,data=pred.train)
+resp.pred = predict(out.lm,newdata=pred.test)
+```
+The tilde is part of a model specification; here, `resp.train~.,data=pred.train` means "regress `resp.train` onto all the predictors, which are defined in the data frame `pred.train`." If you only wanted to regress on a subset, you could do, e.g., `resp.train~u+g,data=pred.train`. (For more information on model formula specification, see, e.g., [this web page](https://faculty.chicagobooth.edu/richard.hahn/teaching/formulanotation.pdf).) `lm` means "linear model." `out.lm` is a data structure that holds all the information about the learned model (e.g., the coefficients, etc.). As far as the second line goes, it is basically saying "send the test-set predictor variables through the model to generate predictions for the held-out response values." `resp.pred` is a vector of the same length as `resp.test`.
+
+The test-set mean-squared error (not shown above) is simply `mean((resp.test-resp.pred)^2)`.
+
+4. Compute the test-set MSE for a linear regression fit to your split data.
+```{r}
+```
+Remember: the magnitude of the MSE is related to spread of values in the data (and/or to the units of the data)! The square root of the MSE gives a notion of how far off you will be when predicting the response for any new predictor datum.
+
+---
+
+Cross-validation is a bit trickier to deal with, if you are coding it by hand. (Many coded models include cross-validation functions that abstract the details away, but seeing how it is done by hand is a useful exercise.) Here's the sequence of calls:
+```
+resp.pred = rep(NA,nrow(df))
+for ( ii in 1:k ) {
+  pred.train = predictors[folds!=ii,]
+  pred.test  = predictors[folds==ii,]
+  resp.train = response[folds!=ii]
+  resp.test  = response[folds==ii]
+  out.lm = lm(resp.train~.,data=pred.train)
+  resp.pred[folds==ii] = predict(out.lm,newdata=pred.test)
+}
+mse.cv.lm = mean((response-resp.pred)^2)
+```
+Here, we loop over each fold, training the model using the data in $k-1$ folds and testing the model using the data in the $k^{\rm th}$ fold. We generate predictions for every datum, not just a subset, so `resp.pred` is of length 10,000, and thus we compute the MSE utilizing the full dataset. Remember: $k$-fold CV generates MSE values with less dispersion than data splitting, but generating the MSE value takes $\approx$ $k$ times longer, which *is* a consideration of you have lots of data and modeling is relatively slow.
+
+5. Utilize the code above to generate an MSE value for cross-validation. Make a mental note of whether the value you get is consistent with, or wildly different from, the value you get for data splitting. It should be roughly the same. If it isn't, call me or a TA over.
+```{r}
+# FILL ME IN
+```
+
+---
+
+Here we will make a temporary data frame that holds the observed and predicted response variables:
+```{r}
+# Uncomment the line below!
+#df.plot = data.frame(response,resp.pred)
+```
+
+6. Use `ggplot` to plot the predicted response values versus the observed response values. (Remember: $y$ versus $x$!) It's a standard scatter plot, except you'll want to chain on some additional function calls: call `xlim()` and `ylim()` with the same arguments, to set the same plot limits along each axis (here, 0 and 2); call `xlab()` and `ylab()` with appropriate string labels for each axis; and call `geom_abline()` with `intercept=0` and `slope=1`. To "de-clutter" your plot somewhat, use `geom_point()` with a point `size` considerably smaller than 1. (Also consider using a transparency parameter like `alpha` and set it to, e.g., 0.4 or something like that.)
+```{r}
+# FILL ME IN
+```
+
+Another standard diagnostic plot is to plot the residuals (the observed response minus the predicted response) versus the predicted response:
+```{r}
+# Uncomment the lines below!
+#df.plot = data.frame(predict(lm.out),response-predict(lm.out))
+#names(df.plot) = c("resp.pred","residuals")
+```
+
+7. Use `ggplot` to plot the residuals versus the predicted response. Play with the `xlim()` and `ylim()` functions to zoom in on the points. (The limits do *not* need to be the same here.) If the model's predictions are correct on average, then the residuals should center on zero, and if the model is approximately correct, you should see the residuals center on zero across the plot, with approximately the same level of scatter across the line.
+```{r}
+# FILL ME IN
+```
+
+---
+
+To illustrate diagnostics for classification, we need yet another dataset:
+```{r}
+df = read.csv("https://raw.githubusercontent.com/pefreeman/PSU_2019/master/StarQuasar.csv")
+dim(df)
+names(df)
+```
+This dataset contains magnitude and redshift data for 500 stars and 500 quasars (which look like stars in images). The idea is to learn a classifier that can discriminate between quasars and stars with a low misclassification rate. 
+
+For simplicity, we will simply use data splitting here.
+
+8. Split the data frame into training and testing subsets like you did in Q2. The predictors are in the first five columns of `df`, whereas the response is in the eighth column. (The type of the eighth column is `character`, but the variable is also a factor variable with two levels: `STAR` and `QSO`.)
+```{r}
+# FILL ME IN
+```
+
+---
+
+To demonstrate classification, we use logistic regression. As was the case with linear regression, you do not yet officially know logistic regression, so we'll provide much of the code for you below.
+
+To generate predictions, we use the following sequence of calls:
+```
+out.log = glm(resp.train~.,data=pred.train,family=binomial)
+resp.prob = predict(log.out,newdata=pred.test,type="response")
+resp.pred = ifelse(resp.prob>0.5,"STAR","QSO")
+```
+Some of this is familiar, some not. Instead of `lm()`, we use `glm()`, which stands for "generalized linear model." The gist of a generalized linear model is that it is a linear model that is transformed so as to change the range of its output. For instance, a linear model can generate predictions spanning the entire number line from $-\infty$ to $\infty$, but such a model doesn't make much sense when the response has values 0 and 1 (which is what the two classes will map to, by default). The `glm()` model, for `family=binomial`, transforms the linear model so as to have output bounded between 0 and 1. Typically, predictions between 0 and 0.5 are mapped to class 0, and those between 0.5 and 1 are mapped to class 1. (We can shift the decision boundary...but not now.)
+
+To display the confusion matrix, use `table(resp.pred,resp.test)`. The rows of the table correspond to predicted values, while the columns correspond to observed values. The "diagonal" values are those at upper left and lower right: you want these cells to display large numbers. The "off-diagonal" elements are those at lower left and upper right: these report the number of misclassifications. A very terse way to quantify the misclassification rate is `mean(resp.pred!=resp.test)`: the part inside the parentheses is a logical vector whose elements are `TRUE` when there is a misclassification and `FALSE` otherwise. Since `TRUE` is equivalent to 1 in `R`, and `FALSE` is equivalent to 0, taking the mean of the vector is the same as summing up all the true values and dividing by the total number of values...voila, the rate of misclassifications.
+
+9. Put all the code together below and determine the rate of misclassification for a logistic regression analysis of the STAR-QSO dataset. The hope is that this will be significantly less than 50%, which is the value you would get if you said every object was a star, or if you said every object was a QSO!
+```{r}
+# FILL ME IN
+```
+
+END OF LAB 2. CONGRATULATIONS!
+
+
+
+

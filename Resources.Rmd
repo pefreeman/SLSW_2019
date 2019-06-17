@@ -1,0 +1,18 @@
+---
+title: "A Few Free Resources"
+author: "Peter Freeman (2019 SLSW)"
+date: "Summer 2019"
+output: 
+  slidy_presentation:
+    font_adjustment: -1
+---
+
+- [An Introduction to R](https://cran.r-project.org/doc/manuals/R-intro.html): the official introduction. For other general `R` resources, see [this web page](http://www.stat.cmu.edu/~cshalizi/uADA/17/R.html).
+
+- [R for Data Science](https://r4ds.had.co.nz/). This is the go-to resource for users of the [tidyverse](https:www.tidyverse.org), including the `dplyr` and `ggplot2` packages. NOTE: the `tidyverse` evolves rapidly, and so the on-line book may be not always be completely up-to-date, or may lack the newest features. 
+
+- [RStudio Cheat Sheets](https://www.rstudio.com/resources/cheatsheets/). Workshop participants may find the `R Markdown`, `dplyr`, and `ggplot2` cheat sheets especially useful.
+
+- [R Markdown: The Definitive Guide](https://bookdown.org/yihui/rmarkdown/). A guide if you wish to go beyond simply emulating the `R Markdown` files used in the workshop.
+
+- [Introduction to Statistical Learning with Applications in R](http://www-bcf.usc.edu/~gareth/ISL/ISLR%20Seventh%20Printing.pdf) by James et al. This covers nearly all the topics we cover in the workshop (along with, e.g., unsupervised learning), at a semi-quantitative level suitable for non-statisticians attempting data analysis. Each chapter has lab exercises.

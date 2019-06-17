@@ -1,0 +1,153 @@
+---
+title: "Lab 1B: Data Frames: dplyr + ggplot"
+author: "Peter Freeman (2019 SLSW)"
+date: "24 June 2019"
+output: 
+  html_document:
+    toc: true
+    toc_float: true
+    theme: spacelab
+---
+
+## Data Frames
+
+A *data frame* is simply a table of data (and, as noted in Lab 1A, an `R` list).
+
+- Each row of a data frame corresponds to an observation (an event, an observed entity, etc.).
+- Each column of a data frame corresponds to some measurement related to that observation.
+
+For instance, I could construct a data frame whose rows correspond to workshop participants and whose columns correspond to information about those participants (e.g., height, weight, department, do they like Chipotle, etc.). Not every cell within a table need be filled: perhaps I never asked you whether you like Chipotle. Missing data are conventionally denoted `NA`, for not available. (Note that there are no hard-and-fast heuristics for how to deal with `NA`s in analyses! The main advice that we can give here is that you should completely document how you deal with them, so that others can reproduce your research later.)
+
+Let's read in the data frame that we use in the `dplyr` notes set:
+```{r}
+df = read.csv("http://www.stat.cmu.edu/~pfreeman/GalaxyMass.csv")
+```
+A .csv file contains (human-readable) "comma-separated values." As a reminder, these data consist of 3456 rows and 10 columns with names
+```{r}
+names(df)
+```
+
+1. Using class notes, display the number of rows, the number of columns, and the dimensionality of the data frame.
+```{r}
+# FILL ME IN
+```
+
+2. Build intuition about the data using the `summary()` function. Which columns contain categorical data? Which columns contain quantitative data?
+```{r}
+# FILL ME IN
+```
+
+To access the values within a single column of a data frame, one conventionally uses the `$` operator. For instance, to access the values of the Gini coefficient, you would type `df$Gini`.
+
+3. Using a relational operator and the `sum()` and `length()` functions, determine what proportion of values in the column named `C` are greater than 3.
+```{r}
+# FILL ME IN
+```
+
+To filter a data frame without using `dplyr` functions, you make use of numeric values or relational operators like you did above, noting that instead of, e.g., `x[4]`, you would do `df[c(1:3),5]`, where the values before the comma are the rows to keep, and the values after the comma are the columns to keep. In this example, I'm keeping the first three rows and just the fifth column. If you leave the value before (or after) the comma blank, then you would keep all rows (or columns).
+
+4. Define a new dataframe, called `df.new`, that only contains only those rows where the Gini coefficient is greater than 0.55. How many rows are there in `df.new`?
+```{r}
+# FILL ME IN
+```
+At this point, you know how to perform basic filtering (row and column selection) of a data frame using "base `R` functionality." At this point, we transition to `dplyr`.
+
+## dplyr
+
+The `dplyr` package is part of the larger [tidyverse](https:www.tidyverse.org), and is as such not part of the base `R` distribution. Below, we check to see if you have the `tidyverse` installed; if yes, the package is loaded, and if no, the package is installed, then loaded.
+```{r}
+if ( require(tidyverse) == FALSE ) {
+  install.packages("tidyverse",repos="https://cloud.r-project.org")
+  library(tidyverse)
+}
+```
+If there are any issues with the `tidyverse` installing or loading, call me or a TA over!
+
+For the next several questions, refer back to the "verbs" that were listed in the `dplyr` notes. 
+
+- When we say "display the first n lines," you should pipe your final output to the `head()` function.
+- When we say "display the number of rows," you should pipe your final output to the `nrow()` function.
+
+5. Implement a filter that keeps the first and last rows of `df` only. (Hint: is there a function that would output the row number of the last row?)
+```{r}
+# FILL ME IN
+```
+
+6. Implement a filter that keeps only those rows that have a value of `M20` less than -2. How many rows are there? (If you get an error and cannot figure out how to get around it, call me or a TA over.)
+```{r}
+# FILL ME IN
+```
+
+7. Utilize grouping and the `summarize()` function to display the average mass in each galaxy field.
+```{r}
+# FILL ME IN
+```
+
+8. Implement a filter that keeps only the `size` and `mass` columns, then display the output in order of *decreasing* mass. Display only the first five rows.
+```{r}
+# FILL ME IN
+```
+
+9. Implement a filter that keeps only those galaxies in the UDS field, then keeps only the `field`, `n`, and `q` columns. Display only the first five rows of the final output.
+```{r}
+# FILL ME IN
+```
+
+10. Repeat Q16, but instead of displaying the output, save the output to a new variable called `df.new`.
+```{r}
+# FILL ME IN
+```
+
+11. Last: let's create a new column called `area` which is the square of `size` times pi. Note that pi is a reserved constant in `R`; there is no need to type out the number. Display the first five lines of output, ordered by descending `area`.
+```{r}
+# FILL ME IN
+```
+
+## ggplot
+
+For the next few questions, refer back to the notes on `ggplot` to see how one can perform basic visualization. Note that *if* filtering of the data frame is involved, then often the most straightforward workflow is to create a new data frame first, then to call `ggplot()` on the next line of code. One *can* put `ggplot()` into a pipe structure, however, and thus do filtering and visualizing in a single line. Choose whichever workflow works best for you.
+
+12. Display a histogram of `z.mode` values.
+```{r}
+# FILL ME IN
+```
+
+13. Display a scatter plot of `mass` vs. `z.mode`. (Remember: a plot is $y$ vs. $x$ and not the other way around.) Change the color of the points and the point size.
+```{r}
+# FILL ME IN
+```
+
+14. Display a boxplot of `C` values for only the GOODSN and GOODSS fields. Change the color of the interior of the boxplot.
+```{r}
+# FILL ME IN
+```
+
+15. Display a faceted set of histograms showing `Gini` values for each field. Change the number of bins in the histograms from the default value.
+```{r}
+# FILL ME IN
+```
+
+## Correlation and Pairs Plots
+
+The last part of the lab involves creating a correlation plot (a pairwise plot which indicates the level of *linear* dependence between variables) using the `corrplot()` function of the `corrplot` package, and an out-and-out pairs plot using the `ggpairs()` function of the `GGally` package.
+```{r}
+if ( require(corrplot) == FALSE ) {
+  install.packages("corrplot",repos="https://cloud.r-project.org")
+  library(corrplot)
+}
+if ( require(GGally) == FALSE ) {
+  install.packages("GGally",repos="https://cloud.r-project.org")
+  library(GGally)
+}
+```
+
+16. Create a correlation plot for the variables `Gini`, `q`, `z.mode`, and `mass` in the style of that displayed in class notes. Can you interpret the output? If you are unsure how to interpret the output, call me or a TA over.
+```{r}
+# FILL ME IN
+```
+
+17. Create a pairs plot for galaxies in the EDS and UDS fields only, showing `field`, `z.mode`, and `mass`. Again, call someone over if you are unsure about what to make of the output.
+```{r}
+```
+
+END OF LAB 1B. CONGRATULATIONS!

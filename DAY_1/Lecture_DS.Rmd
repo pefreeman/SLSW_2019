@@ -1,0 +1,18 @@
+---
+title: "Data Science (in One Slide)"
+author: "Peter Freeman (SLSW 2019)"
+date: "24 June 2019"
+output: 
+  slidy_presentation:
+    font_adjustment: -1
+---
+
+The Search for the Unicorn
+===
+
+<center>![](http://www.stat.cmu.edu/~pfreeman/data_science.png){width=500px}</center>
+
+(Credit: Computer Science Department, Luther College)
+
+
+

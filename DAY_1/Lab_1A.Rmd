@@ -1,0 +1,53 @@
+---
+title: "Lab 1A: Vector Manipulation"
+author: "Peter Freeman (2019 SLSW)"
+date: "24 June 2019"
+output: 
+  html_document:
+    toc: true
+    toc_float: true
+    theme: spacelab
+---
+
+If you can see this message: congratulations! It means that you have sucessfully installed `R` and `RStudio` on your computer and that you are ready to dive into building those basic skills that will lead you to being able to manipulate data frames.
+
+## Vector Manipulation
+
+1. Each column of a data frame is itself a vector. So let's start with some basic vector manipulation. Use the `c()` function to define a vector `x` with four values: 1, 4, 1, and 9. (You should replace the "# FILL ME IN" statement below with your answer.) Note that vectors are homogeneous (all of the same type), with the most common types being `double` (or `numeric`), `character`, and `logical`. The vector you define has type `double`. Check this by typing `typeof(x)` and noting the output. Then type `x[4]`. What do you see?
+```{r}
+# FILL ME IN
+```
+If the value(s) inside the square bracket is/are numeric, then that/those elements of the vector are displayed. (Note: `R` counts from 1, not 0.) If the value(s) are logical, then only those elements with value `TRUE` are displayed. This will make more sense below.
+
+2. Relational operators are binary operators of the form "variable operator value," e.g., `x < 0`. The six basic relational operators are `==`, `!=`, `<`, `>`, `<=`, and `>=` (for "equals," "not equals," "less than," "greater than," "less than or equals," and "greater than or equals.") Relational operators return a vector of logicals, meaning a vector of `TRUE` and `FALSE` values. Below, display the output for `x == 1` and `x > 3`.
+```{r}
+# FILL ME IN
+```
+
+3. Apply the `sum()` function with input `x == 1`. Does the output make sense to you?
+```{r}
+# FILL ME IN
+```
+
+4. Relational operators may be combined with `&` (logical AND) or `|` (logical OR). Below, display the output for `x < 2 | x > 5`.
+```{r}
+# FILL ME IN
+```
+
+5. A reason to learn relational operators is that they underpin the manipulation of vectors (and thus underpin the manipulation of, e.g., rows or columns of data frames). To display a subset of values of the vector `x`, you can for instance type `x[...]`, where you would replace `...` with a relational operator. What happens when you type `x[x==1]`?
+```{r}
+# FILL ME IN
+```
+
+6. Some last things to do for now: apply the `length()` function to `x`, apply the `sort()` function to `x`, apply the `sort()` function to `x` with the additional argument `decreasing=TRUE`, apply the `unique()` function to `x`, and apply the `table()` function to `x`. Build intuition about what each does. (Note that `table()` is a handy function for doing exploratory data analysis of categorical variables.) To see the help page for each function, you can go to the `Console` pane in `RStudio` and at the prompt type a question mark immediately followed by the function name (e.g., `?sort`). You can use help pages to determine what optional arguments exist for each function and what their default values are. For instance, what is the default value for `decreasing` when sorting?
+```{r}
+# FILL ME IN
+```
+
+7. A *list* in `R` is a collection of vectors. Define a list below using `list()`, with the first entry having name `x` and values 1 and 2, and the second entry having name `y` and values "a", "b", and "c". Display the list.
+```{r}
+# FILL ME IN
+```
+The individual entries of a list are vectors, which are homogeneous, but the entries may each be of different type. A list whose entries are all of the same length is a data frame. Data frames will be the subject of Lab 2 this afternoon.
+
+END OF LAB 1A. CONGRATULATIONS!
