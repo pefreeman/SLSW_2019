@@ -113,13 +113,22 @@ Since the MSE is unit-dependent, you cannot use its value alone to determine the
 
 A useful diagnostic is to plot predicted responses (for the test set data!) versus the observed responses:
 
-<center>![](http://www.stat.cmu.edu/~pfreeman/Regression_Diagnostic.png){width=30%}</center>
+<center>![](http://www.stat.cmu.edu/~pfreeman/Fig_Diagnostic_I.png){width=40%}</center>
 
 Key points:
 
 - If the data are completely uninformative, the data will lie on a horizontal locus: every input with generate the same prediction, the average observed value.
 - If the model is "perfect," the data will lie along the diagonal line.
 - Real-life models will generate plots with behaviors between this two extremes, with additional intrinsic scatter.
+
+Model Diagnostic: Regression
+===
+
+A variation on the diagnostic presented on the previous slide is to plot model residuals (observed response minus predicted response) versus the predicted responses:
+
+<center>![](http://www.stat.cmu.edu/~pfreeman/Fig_Diagnostic_II.png){width=40%} ![](http://www.stat.cmu.edu/~pfreeman/Fig_Diagnostic_III.png){width=40%}</center>
+
+If the model reflects well any underlying association, then conditional on the value of the predicted redshift, the residuals should have zero mean. Furthermore, for models such as linear regression that have a built-in assumption of normality with constant variance, the standardized residuals should be normally distributed with variance 1. (Normality of the residuals may be checked using, e.g., the `qqnorm()` function.)
 
 Model Diagnostics: Classification
 ===
