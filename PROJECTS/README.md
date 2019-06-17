@@ -7,7 +7,7 @@ The datasets: blogPost, civilWar, diamond, emline, forestFire, houseValue, movem
 
 To load a dataset into R:
 
-load(url(https://raw.githubusercontent.com/pefreeman/SLSW_2019/master/PROJECTS/subdirectory/dataset.Rdata))
+load(url("https://raw.githubusercontent.com/pefreeman/SLSW_2019/master/PROJECTS/subdirectory/dataset.Rdata"))
 
 Replace "subdirectory" with an actual subdirectory name, as given above, and replace "dataset" with the matching dataset name. Once a dataset is loaded, you should see the variables `predictors` and `response` in your global environment. The README file in each subdirectory gives some documentation about what the variables represent.
 
