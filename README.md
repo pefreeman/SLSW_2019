@@ -18,7 +18,7 @@ Workshop materials (lectures, labs, and project data) are available on [this web
 
 ## Current Schedule for the 2019 Statistical Learning Summer Workshop
 
-| Date &nbsp; &nbsp; &nbsp; &nbsp: &nbsp; | Time | Activity |
+| Date &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; | Time | Activity |
 |----|----|----|
 | Monday (24 June) | 09:00 AM - 09:30 AM | Welcome and Orientation |
 |                  | 09:30 AM - 11:30 AM | Lectures: Statistical Learning, Data Science, R, Vectors (+ Lab 1A) |
