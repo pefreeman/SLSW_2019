@@ -8,6 +8,10 @@ This workshop is made possible thanks to the support of
 
 ---
 
+Workshop materials (lectures, labs, and project data) are available on [this web page](https://github.com/pefreeman/SLSW_2019).
+
+---
+
 Preliminary Schedule for the 2019 Statistical Learning Summer Workshop
 ---
 
