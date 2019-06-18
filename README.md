@@ -20,34 +20,34 @@ Workshop materials (lectures, labs, and project data) are available on [this web
 
 | Date | Time | Activities |
 |----|----|----|
-| Day 1 | 09:00 AM - 09:30 AM | Welcome and Orientation |
-| Monday (24 June) | 09:30 AM - 11:30 AM | Lectures: Statistical Learning, Data Science, R, Vectors (+ Lab 1A) |
+| Day 1: Monday, 24 June | 09:00 AM - 09:30 AM | Welcome and Orientation |
+|                  | 09:30 AM - 11:30 AM | Lectures: Statistical Learning, Data Science, R, Vectors (+ Lab 1A) |
 |                  | 11:30 AM - 12:30 PM | Lunch |
 |                  | 12:30 PM - 02:00 PM | Lectures: dplyr, ggplot (+ Lab 1B) |
 |                  | 02:00 PM - 02:30 PM | Break |
 |                  | 02:30 PM - 04:00 PM | Lab 1B [cont.] - Project Discussion |
-| Day 2               | 09:30 AM - 10:00 AM | Project Assignment + Poster Discussion |
-| Wednesday (26 June) | 10:00 AM - 11:30 AM | Guest Speaker: Brittany Allison ([Undergraduate Research Office](https://www.cmu.edu/uro) |
+| Day 2: Wednesday, 26 June               | 09:30 AM - 10:00 AM | Project Assignment + Poster Discussion |
+|                     | 10:00 AM - 11:30 AM | Guest Speaker: Brittany Allison ([Undergraduate Research Office](https://www.cmu.edu/uro) |
 |                     | 11:30 AM - 12:30 PM | Lunch |
 |                     | 12:30 PM - 02:00 PM | Lecture: EDA (+ Application to Project Data) |
 |                     | 02:00 PM - 02:30 PM | Break |
 |                     | 02:30 PM - 04:00 PM | Lecture: Model Assessment (+ Lab 2) |
 |                     | Homework            | Complete Exploratory Data Analysis for Project Data |
-| Day 3           | 09:30 AM - 10:15 AM | Short Presentations: Project EDA |
-| Monday (1 July) | 10:15 AM - 11:30 AM | Lectures: Linear Regression, Logistic Regression |
+| Day 3: Monday, 1 July           | 09:30 AM - 10:15 AM | Short Presentations: Project EDA |
+|                 | 10:15 AM - 11:30 AM | Lectures: Linear Regression, Logistic Regression |
 |                 | 11:30 AM - 12:30 PM | Lunch |
 |                 | 12:30 PM - 02:00 PM | Lecture: Variable Selection (+ Application to Project Data) |
 |                 | 02:00 PM - 02:30 PM | Break |
 |                 | 02:30 PM - 04:00 PM | Application to Project Data [cont.] |
 |                 | Homework            | Complete Linear/Logistic Analyses of Project Data |
-| Day 4           | 09:30 AM - 10:15 AM | Short Presentations: Project Linear/Logistic Regression |
-| Monday (8 July) | 10:15 AM - 11:30 AM | Lectures: Machine Learning, Trees, Random Forest, Boosting |
+| Day 4: Monday, 8 July           | 09:30 AM - 10:15 AM | Short Presentations: Project Linear/Logistic Regression |
+|                 | 10:15 AM - 11:30 AM | Lectures: Machine Learning, Trees, Random Forest, Boosting |
 |                 | 11:30 AM - 12:30 PM | Lunch |
 |                 | 12:30 PM - 02:00 PM | Lecture: Naive Bayes, Support Vector Machine (+ Application to Project Data) |
 |                 | 02:00 PM - 02:30 PM | Break |
 |                 | 02:30 PM - 04:00 PM | Application to Project Data [cont.] + Poster Office Hours |
 |                 | Homework            | Complete ML Analyses of Project Data |
-| Day 5               | 09:30 AM - 10:15 AM | Short Presentations: Project ML Analyses |
-| Wednesday (10 July) | 10:15 AM - 11:30 AM | Poster Office Hours |
+| Day 5: Wednesday, 10 July               | 09:30 AM - 10:15 AM | Short Presentations: Project ML Analyses |
+|                     | 10:15 AM - 11:30 AM | Poster Office Hours |
 |                     | 11:30 AM - 01:00 PM | Lunch (+ Poster Printing) |
 |                     | 01:00 PM - 02:00 PM | Public Poster Presentation |
