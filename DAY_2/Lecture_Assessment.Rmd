@@ -84,7 +84,7 @@ set.seed(101)
 sample(10,3)     # voila: the same three numbers!
 ```
 
-Model Assessment Metrics: Loss and Risk
+Model Assessment Metrics: Loss
 ===
 
 A *loss function*, also known as a *cost function*, is a metric that represents the quality of fit of a model. 
