@@ -27,7 +27,7 @@ Workshop materials (lectures, labs, and project data) are available on [this web
 |                  | 02:00 PM - 02:30 PM | Break |
 |                  | 02:30 PM - 04:00 PM | Lab 1B [cont.] - Project Discussion |
 | Day 2: Wednesday, 26 June               | 09:30 AM - 10:00 AM | Project Assignment + Poster Discussion |
-|                     | 10:00 AM - 11:30 AM | Guest Speaker: Brittany Allison ([Undergraduate Research Office](https://www.cmu.edu/uro) |
+|                     | 10:00 AM - 11:30 AM | Guest Speaker: Brittany Allison ([Undergraduate Research Office](https://www.cmu.edu/uro)) |
 |                     | 11:30 AM - 12:30 PM | Lunch |
 |                     | 12:30 PM - 02:00 PM | Lecture: EDA (+ Application to Project Data) |
 |                     | 02:00 PM - 02:30 PM | Break |
