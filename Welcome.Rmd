@@ -1,0 +1,194 @@
+---
+title: "Welcome"
+author: "Peter Freeman (2019 SLSW)"
+date: "Summer 2019"
+output: 
+  slidy_presentation:
+    font_adjustment: -1
+---
+
+The 2019 Statistical Learning Summer Workshop is an opportunity for Carnegie Mellon Graduate students from outside of statistics to gain experience in statistical learning, the attempt to discover underlying associations between variables in a dataset.
+
+Your organizers (Peter Freeman, Joel Greenhouse, and Rebecca Nugent):
+
+<center>![](http://www.stat.cmu.edu/~pfreeman/freeman.png){width=17.4%} ![](http://www.stat.cmu.edu/~pfreeman/greenhouse.png){width=16.05%} ![](http://www.stat.cmu.edu/~pfreeman/nugent.png){width=15.6%}</center>
+
+Your teaching assistants (Mikaela Meyer and Pratik Patil):
+
+<center>![](http://www.stat.cmu.edu/~pfreeman/meyer.png){width=15.1%} ![](http://www.stat.cmu.edu/~pfreeman/patil.png){width=15%}</center>
+
+This workshop is made possible thanks to the support of
+
+- The Office of the Vice Provost for Education (Amy Burkert, Suzie Laurich-McIntyre); and 
+- The Data Science Initiative within CMU's Department of Statistics & Data Science (Rebecca Nugent).
+
+Important Note: This is Not a Statistics Class (Per Se)
+===
+
+This workshop does not mimic an introductory statistics course. For instance, we don't explicitly introduce and explain
+
+- probability distributions;
+- confidence intervals; and
+- hypothesis tests.
+
+Words and phrases like "normal distribution" and "p-value," etc., may come up here and there (particularly when discussing linear regression), but they are not central to the discussion.
+
+Case Study
+===
+
+<center>![](http://www.stat.cmu.edu/~pfreeman/first_light.100dpi.jpg){width=50%}</center>
+
+(https://classic.sdss.org/gallery/gal_data.html)
+
+The Research Question: how far away are the galaxies in images like these?
+
+Statistically Stated: can we determine an informative association between the properties of galaxies extracted from images and their distances?
+
+Case Study
+===
+
+The data for our particular dataset:
+
+- 17 measurements for each of 3,419 galaxies
+  + 4 measurements related to galaxy brightness at different wavelengths
+  + 12 measurements of galaxy appearance (4 measurements each at 3 different wavelengths)
+  + 1 measurement related to galaxy distance (called *redshift*)
+  
+The goal: to determine the association between the 16 *predictor variables* and the *response variable*: redshift.
+
+```{r echo=FALSE}
+load(url("https://raw.githubusercontent.com/pefreeman/36-290/master/EXAMPLE_DATASETS/PHOTO_MORPH/photo_morph.Rdata"))
+set.seed(404)
+train = sample(nrow(predictors),0.7*nrow(predictors))
+pred.train = predictors[train,]
+pred.test  = predictors[-train,]
+resp.train = response[train]
+resp.test  = response[-train]
+```
+
+Case Study
+===
+
+We identify that redshift is a continuously valued, or *quantitative*, variable. Hence we will pursue regression.
+
+A basic analysis workflow:
+
+1. Build intuition about the data by examining the observed (or "empirical") distributions of variable values; this is exploratory data analysis.
+2. Split the data into two sets: a set of galaxies that will be input into functions that help us learn the association (i.e., the training set), and a set of galaxies that we help us assess the quality of our modeled association.
+3. Learn a variety of models, from the simple (linear regression) to the complex (e.g., random forest). Determine the one that provides the highest quality fits.
+4. Interpret the model (if possible and if desired).
+5. Publish!
+
+Case Study
+===
+
+```{r echo=FALSE}
+out.lm = lm(resp.train~.,data=pred.train)
+resp.pred = predict(out.lm,newdata=pred.test)
+mse.lm = mean((resp.test-resp.pred)^2)         # MSE = 0.2912
+
+if ( require(rpart) == FALSE ) {
+  install.packages("rpart",repos="https://cloud.r-project.org")
+  library(rpart)
+}
+out.tree = rpart(resp.train~.,data=pred.train)
+resp.pred = predict(out.tree,newdata=pred.test)
+mse.tree = mean((resp.test-resp.pred)^2)       # MSE = 0.2143
+
+if ( require(randomForest) == FALSE ) {
+  install.packages("randomForest",repos="https://cloud.r-project.org")
+  library(randomForest)
+}
+set.seed(303)
+out.rf = randomForest(resp.train~.,data=pred.train,importance=TRUE)
+resp.pred = predict(out.rf,newdata=pred.test)
+mse.rf = mean((resp.test-resp.pred)^2)         # MSE = 0.1552
+```
+
+<center>
+| Model | Mean-Squared Error |
+| ----- | ------------------ |
+| Linear Regression | 0.2912 |
+| Regression Tree   | 0.2143 |
+| Random Forest     | 0.1552 |
+</center>
+
+This is but a subset of possible models: we could try improving the mean-squared error (a measure of the quality of the association) by choosing an informative subset of the variables; we could try other model classes like generalized additive models or boosting models; etc.
+
+Conclusion: non-linear models such as random forest do a much better job at modeling the association between the
+predictor variables and the redshift than linear regression!
+
+Case Study
+===
+
+```{r echo=FALSE,fig.height=6,fig.width=6,fig.align="center"}
+if ( require(ggplot2) == FALSE ) {  
+  install.packages("ggplot2",repos="https://cloud.r-project.org")
+  library(ggplot2)
+}
+df.plot = data.frame(resp.test,resp.pred)
+ggplot(data=df.plot,mapping=aes(x=resp.test,y=resp.pred)) + 
+  geom_point() + geom_abline(intercept=0,slope=1,color="red") + xlab("Observed Redshift") + 
+  ylab("Predicted Redshift") + xlim(0,6) + ylim(0,6)
+```
+
+Case Study
+===
+
+```{r echo=FALSE,fig.height=6,fig.width=6,fig.align="center"}
+if ( require(grid) == FALSE ) {  
+  install.packages("grid",repos="https://cloud.r-project.org")
+  library(grid)
+}
+ggVarImpPlot = function(importance,column=1,shiftFactor=10) {
+  o = order(importance[,column])
+  x = importance[o,column]
+  var = rownames(importance)[o]
+
+  n = length(x)
+  y = (1:n)/(n+1)
+  df = data.frame(x,y)
+  
+  xlabel = colnames(importance)[column]
+  if ( xlabel == "%IncMSE") xlabel = "MSE: Percentage Increase"
+  if ( xlabel == "IncNodePurity") xlabel = "Increase in Node Purity"
+  if ( xlabel == "MeanDecreaseGini") xlabel = "Gini: Mean Decrease"
+  if ( xlabel == "MeanDecreaseAccuracy") xlabel = "Accuracy: Mean Decrease"
+
+  if ( require(ggplot2) == FALSE ) { stop("The ggplot2 package is required to execute this function.")}
+  if ( require(grid)    == FALSE ) { stop("The grid package is required to execute this function.")}
+  p = ggplot(data=df,mapping=aes(x=x,y=y)) + geom_point(size=2) + xlim(0,max(x)) + ylim(0,1) + xlab(xlabel) + 
+    theme(axis.title.y=element_blank(),axis.text.y=element_blank(),axis.ticks.y=element_blank()) +
+    theme(plot.margin=unit(c(1,1,1,2),"cm"))
+  for ( ii in 1:n ) {
+    p = p + 
+      annotation_custom(grob = textGrob(label=var[ii]),ymin=y[ii],ymax=y[ii],
+                        xmin=-max(x)/shiftFactor,xmax=-max(x)/shiftFactor) +
+      geom_hline(yintercept=y[ii],linetype="dashed",color="red",size=0.3)
+  }
+  gt <- ggplot_gtable(ggplot_build(p))
+  gt$layout$clip[gt$layout$name == "panel"] <- "off"
+  grid.draw(gt)
+  invisible(list(p=p,gt=gt))
+}
+ggVarImpPlot(importance(out.rf,shiftFactor=8))
+```
+
+Conclusion: brightness variables (`col` and `mag`) are more important predictor variables than variables summarizing galaxy appearance!
+
+Project Datasets
+===
+
+Regression:
+
+1. *Blog Posting*: how many comments will be made in the next 24 hours, given current conditions?
+2. *Diamonds*: what is the price of a diamond, given its properties?
+3. *Galaxy Mass*: what is the mass of a galaxy, given the strength of its emission lines?
+4. *Forest Fire*: how much area will a forest fire consume, given initial conditions?
+5. *House Value*: what is the price of a house, given location and other properties?
+
+Classification:
+
+1. *Civil War*: given conditions about a country, is it undergoing a civil war?
+2. *Movements*: given information about a societal movement, can you predict if it was successful?
+3. *Wine Quality*: given properties of a wine...does it taste `BAD` or `GOOD`?
