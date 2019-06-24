@@ -41,7 +41,7 @@ ggplot: Bar Chart
 ===
 
 How many galaxies are in each field?
-```{r fig.height=6,fig.width=6,fig.align="center"}
+```{r fig.height=4.5,fig.width=4.5,fig.align="center"}
 ggplot(data=df,mapping=aes(x=field)) + geom_bar(color="red",fill="blue")
 ```
 (A bar chart is appropriate when the x-axis variable is categorical and the y-axis variable is quantitative.) You can extract the same information in non-visual form using a call to `table()`:
@@ -53,7 +53,7 @@ ggplot: Histogram
 ===
 
 What is the distribution of galaxy sizes?
-```{r fig.height=6,fig.width=6,fig.align="center"}
+```{r fig.height=4.5,fig.width=4.5,fig.align="center"}
 ggplot(data=df,mapping=aes(x=size)) + geom_histogram(color="blue",bins=25)
 ```
 (A histogram is appropriate when the single variable in question is quantitative.)
@@ -62,7 +62,7 @@ ggplot: Boxplot
 ===
 
 Boxplots are just a bit trickier. What is the distribution of galaxy concentrations?
-```{r fig.height=6,fig.width=6,fig.align="center"}
+```{r fig.height=4.5,fig.width=4.5,fig.align="center"}
 ggplot(data=df,mapping=aes(x="",y=C)) + geom_boxplot(color="blue",fill="orange")
 ```
 Note the empty string for `x`.
@@ -72,7 +72,7 @@ ggplot: Side-By-Side Boxplots
 ===
 
 We can group the data given the values of a categorical variable to create side-by-side boxplots:
-```{r fig.height=6,fig.width=6,fig.align="center"}
+```{r fig.height=4.5,fig.width=4.5,fig.align="center"}
 ggplot(data=df,mapping=aes(x=field,y=C)) + geom_boxplot(color="blue",fill="orange") 
 ```
 
@@ -80,7 +80,7 @@ ggplot: Faceting
 ===
 
 Faceting is the act of making multiple plots at once that appear side-by-side as "facets". Faceting is something you might want to do when, e.g., you have a factor variable. Here, we show histograms of the concentration variable `C` broken up by galaxy field.
-```{r fig.height=6,fig.width=6,fig.align="center"}
+```{r fig.height=4.5,fig.width=4.5,fig.align="center"}
 ggplot(data=df,mapping=aes(x=C)) + geom_histogram(color="blue",fill="yellow",bins=25) +
 facet_wrap(~field,scales='free_x')
 ```
@@ -89,7 +89,7 @@ ggplot: Scatter Plot
 ===
 
 Is there any visually apparent association between the mass of a galaxy and the concentration of its light?
-```{r fig.height=6,fig.width=6,fig.align="center"}
+```{r fig.height=4.5,fig.width=4.5,fig.align="center"}
 ggplot(data=df,mapping=aes(x=mass,y=C)) + geom_point(color="red",size=0.5)
 ```
 
@@ -110,7 +110,7 @@ corrplot: Correlation Plot
 ===
 
 Here we generate the correlation plot for `M20`, `A`, and `z.mode`:
-```{r fig.height=6,fig.width=6,fig.align="center"}
+```{r fig.height=4.5,fig.width=4.5,fig.align="center"}
 corrplot(cor(df[,c("M20","A","z.mode")]),method="ellipse")
 ```
 
@@ -118,12 +118,12 @@ GGally: Pairs Plot
 ===
 
 We step outside canonical `ggplot` plotting for now to bring you a pairs plot from the `GGally` package:
-```{r fig.height=6,fig.width=6,fig.align="center"}
+```{r fig.height=4.5,fig.width=4.5,fig.align="center"}
 if ( require(GGally) == FALSE ) {
   install.packages("GGally",repos="https://cloud.r-project.org")
   library(GGally)
 }
 df.new = df %>% filter(.,(field=="COSMOS"|field=="EGS")) %>% select(M20,A,z.mode)
-ggpairs(df.new,progress=FALSE,lower=list(combo=wrap("facethist", binwidth=0.8)))
+ggpairs(df.new,progress=FALSE)
 ```
 

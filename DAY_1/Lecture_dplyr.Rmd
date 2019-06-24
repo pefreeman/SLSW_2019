@@ -122,7 +122,7 @@ mutate()
 
 Use `mutate()` when you want to create one or several columns:
 ```{r}
-df %>% mutate(.,mass.linear=10^mass) %>% select(.,mass,mass.linear) %>% arrange(mass) %>% head(.,3)
+df %>% mutate(.,mass.linear=10^mass) %>% select(.,mass,mass.linear) %>% arrange(.,mass) %>% head(.,3)
 ```
 
 Saving the New Data Frame

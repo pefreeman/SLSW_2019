@@ -93,7 +93,7 @@ For the next several questions, refer back to the "verbs" that were listed in th
 # FILL ME IN
 ```
 
-10. Repeat Q16, but instead of displaying the output, save the output to a new variable called `df.new`.
+10. Repeat Q9, but instead of displaying the output, save the output to a new variable called `df.new`.
 ```{r}
 # FILL ME IN
 ```
@@ -146,8 +146,9 @@ if ( require(GGally) == FALSE ) {
 # FILL ME IN
 ```
 
-17. Create a pairs plot for galaxies in the EDS and UDS fields only, showing `field`, `z.mode`, and `mass`. Again, call someone over if you are unsure about what to make of the output.
+17. Create a pairs plot for galaxies in the EGS and UDS fields only, showing `field`, `z.mode`, and `mass`. Again, call someone over if you are unsure about what to make of the output.
 ```{r}
+# FILL ME IN
 ```
 
 END OF LAB 1B. CONGRATULATIONS!
