@@ -70,7 +70,7 @@ Linear Regression: Output
 ===
 
 In addition to the $p$ values, you will note in the example output a value dubbed "Adjusted R-squared" (which has value 0.983). The adjusted $R^2$ has a value between 0 and 1 and is an estimate of the proportion of the variance of the data along the $y$-axis explained by the linear regression model. Adjusted $R^2$ provides intuition as to how good a linear model fits to the data, as opposed to the mean-squared error.
-```{r fig.height=6,fig.width=6,fig.align="center"}
+```{r fig.height=4.5,fig.width=4.5,fig.align="center"}
 library(ggplot2)
 df = data.frame(x,y,predict(out.lm))
 names(df) = c("x","y","y.pred")

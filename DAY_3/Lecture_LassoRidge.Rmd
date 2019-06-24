@@ -69,7 +69,7 @@ Lasso: Example
 ===
 
 Here we utilize the `glmnet` package. The functions of `glmnet` are a tad "prickly" in that they don't abide by the usual rules that apply to model functions in `R`, as you will see. Note that to perform ridge regression, one can perform all the same steps below, except changing the argument `alpha=1` to `alpha=0`. Also note that one can apply lasso and ridge regression in the context of, e.g., binary classification by adding the argument `family="binomial"` to `glmnet()` function calls.
-```{r fig.height=6,fig.width=6,fig.align="center"}
+```{r fig.height=4.5,fig.width=4.5,fig.align="center"}
 if ( require(glmnet) == FALSE ) {
   install.packages("glmnet",repos="https://cloud.r-project.org")
   library(glmnet)
@@ -84,7 +84,7 @@ Lasso: Example
 ===
 
 What is the optimal value of $\lambda$?
-```{r fig.height=6,fig.width=6,fig.align="center"}
+```{r fig.height=4.5,fig.width=4.5,fig.align="center"}
 set.seed(301)  # cv.glmnet() performs random sampling...so set the seed!
 cv = cv.glmnet(x,y,alpha=1)
 plot(cv)
