@@ -13,18 +13,20 @@ The data are contained in forestFire.Rdata:
 
 predictors: 517 x 12
 
-   X: coordinate from 1 (west) to 9 (east)
-   Y: coordinate from 1 (south) to 9 (north)
-   month: month of year
-   day: day of week
-   FFMC: fine fuel moisture code
-   DMC: Duff moisture code
-   DC: drought code
-   ISI: initial spread index
-   temp: outside temperature (Celcius)
-   RH: outside relative humidity (percentage)
-   wind: outside wind speed (in km/hour)
-   rain: outside rainfall within previous 30 minutes (in mm per meter-squared)
+| name | description |
+| ---- | ----------- |
+|  X | coordinate from 1 (west) to 9 (east) |
+|  Y | coordinate from 1 (south) to 9 (north) |
+|  month | month of year |
+|  day | day of week |
+|  FFMC | fine fuel moisture code |
+|  DMC | Duff moisture code |
+|  DC | drought code |
+|  ISI | initial spread index |
+|  temp | outside temperature (Celcius) |
+|  RH | outside relative humidity (percentage) |
+|  wind | outside wind speed (in km/hour) |
+|  rain | outside rainfall within previous 30 minutes (in mm per meter-squared) |
 
 response: 517 x 1
 

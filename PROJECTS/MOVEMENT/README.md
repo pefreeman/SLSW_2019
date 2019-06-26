@@ -14,14 +14,16 @@ The data are contained in movement.Rdata:
 
 predictors: 218 x 8
 
-   nonviol: 1 for non-violent movements, 0 otherwise
-   democracy: measure of democracy, from -10 (undemocratic) to 10 (democratic)
-   sanctions: 1 if country was under international sanctions, 0 otherwise
-   aid: 1 if country received aid to deal with the movement, 0 otherwise
-   support: 1 if the *movement* received foreign aid, 0 otherwise
-   viol.repress: 1 if the government utilized violence, 0 otherwise
-   defect: 1 if substantial portions of government forces defected, 0 otherwise
-   duration: duration of movement, in days
+| name | description |
+| ---- | ----------- |
+|  nonviol | 1 for non-violent movements, 0 otherwise |
+|  democracy | measure of democracy, from -10 (undemocratic) to 10 (democratic) |
+|  sanctions | 1 if country was under international sanctions, 0 otherwise |
+|  aid | 1 if country received aid to deal with the movement, 0 otherwise |
+|  support | 1 if the *movement* received foreign aid, 0 otherwise |
+|  viol.repress | 1 if the government utilized violence, 0 otherwise |
+|  defect | 1 if substantial portions of government forces defected, 0 otherwise |
+|  duration | duration of movement, in days |
 
 response: 218 x 1
 

@@ -15,19 +15,23 @@ The data are contained in emline.Rdata:
 
 predictors: 21046 x 10
 
-   equivalent widths for ten emission lines: 
+| name | description |
+| ---- | ----------- |
+| equivalent widths for ten emission lines |
       H_ALPHA, H_beta, H_gamma
       O_II_3729
       O_III_4959, O_III_5007
       N_II_6548, N_II_6584
-      S_II_6717, S_II_6731
+      S_II_6717, S_II_6731 |
 
-   The alpha, beta, and gamma are historical notations for Balmer-series
-      transitions.
-   The Roman numerals indicate ionization state: O_II is oxygen missing 
-      one electron, O_III is oxygen missing two electrons, etc.
-   The Arabic numerals indicate wavelength in Angstroms, where 
-      1 A = 1 x 10^-10 meters = 0.1 nanometers
+The alpha, beta, and gamma are historical notations for Balmer-series
+    transitions.
+
+The Roman numerals indicate ionization state: O_II is oxygen missing 
+    one electron, O_III is oxygen missing two electrons, etc.
+
+The Arabic numerals indicate wavelength in Angstroms, where 
+    1 A = 1 x 10^-10 meters = 0.1 nanometers
 
 response: 21046 x 1
 
