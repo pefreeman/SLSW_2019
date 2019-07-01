@@ -25,13 +25,13 @@ Having discussed linear regression, it makes sense to first step back and look a
 
 In conventional linear regression, we estimate the mean value of the response variable $Y$, given predictor variables $X_1,\ldots,X_p$:
 $$
-E[Y|X] = \beta_0 + \beta_1 X_1 + \cdots + \beta_n X_n \,.
+E[Y|X_1,\ldots,X_p] = \beta_0 + \beta_1 X_1 + \cdots + \beta_p X_p \,.
 $$
 In a generalized linear model, we include a "link function" $g$ that takes the linear model and transforms it:
 $$
-g(E[Y|X]) = \beta_0 + \beta_1 X_1 + \cdots + \beta_n X_n \,.
+g(E[Y|X_1,\ldots,X_p]) = \beta_0 + \beta_1 X_1 + \cdots + \beta_p X_p \,.
 $$
-One uses the link function to reduce the range of possible values for $E[Y \vert X]$ from $(-\infty,\infty)$ to, e.g., [0,1] or $[0,\infty)$, etc. 
+One uses the link function to reduce the range of possible values for $E[Y \vert X_1,\ldots,X_p]$ from $(-\infty,\infty)$ to, e.g., [0,1] or $[0,\infty)$, etc. 
 
 In addition, in a GLM you specify a "family," or the distribution that governs the observed response values. For instance, if the observed response values are zero and the positive integers, the family could be "Poisson." If they are just 0 and 1, the family is "binomial." Etc.
 
@@ -40,21 +40,21 @@ Logistic Regression
 
 For logistic regression, a conventional choice of link function is the *logit* function:
 $$
-\log\left[\frac{E[Y \vert X]}{1-E[Y \vert X]}\right] = \beta_0 + \beta_1 X_1 + \cdots + \beta_n X_n \,,
+\log\left[\frac{E[Y \vert X_1,\ldots,X_p]}{1-E[Y \vert X_1,\ldots,X_p]}\right] = \beta_0 + \beta_1 X_1 + \cdots + \beta_p X_p \,,
 $$
 so that
 $$
-E[Y \vert X] = \frac{e^{\beta_0 + \beta_1 X_1 + \cdots + \beta_n X_n}}{1 + e^{\beta_0 + \beta_1 X_1 + \cdots + \beta_n X_n}} \,.
+E[Y \vert X_1,\ldots,X_p] = \frac{e^{\beta_0 + \beta_1 X_1 + \cdots + \beta_p X_p}}{1 + e^{\beta_0 + \beta_1 X_1 + \cdots + \beta_p X_p}} \,.
 $$
 
 Assuming that we are dealing with two classes, the possible observed values for $Y$ are 0 and 1, so the family is `binomial`, i.e.,
 $$
-Y \vert X \sim {\rm Binomial}(n=1,p=E[Y\vert X]) \,.
+Y \vert X_1,\ldots,X_p \sim {\rm Binomial}(n=1,p=E[Y\vert X_1,\ldots,X_p]) \,.
 $$
 
 A major difference between linear and logistic regression is that the latter involves numerical optimization, i.e., instead of plugging into a formula, you have to use an iterative algorithm to find the $\beta$'s that maximize the likelihood function:
 $$
-\left( \prod_{i: Y_i=1} E[Y \vert X_i] \right) \left( \prod_{i: Y_i=0} (1 - E[Y \vert X_i]) \right) \,.
+\left( \prod_{i: Y_i=1} E[Y \vert X_{1,i},\ldots,X_{p,i}] \right) \left( \prod_{i: Y_i=0} (1 - E[Y \vert X_{1,i},\ldots,X_{p,i}]) \right) \,.
 $$
 Numerical optimization means the logistic regression runs more slowly than linear regression.
 
