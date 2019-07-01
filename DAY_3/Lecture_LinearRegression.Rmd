@@ -131,3 +131,23 @@ resp.pred = predict(out.lm,newdata=pred.test)   # Generate test-set predictions
 mean((resp.pred-resp.test)^2)                   # Compute MSE
 ```
 
+Last Point: Variance Inflation Factor (VIF)
+===
+
+An example:
+```{r}
+if ( require(car) == FALSE ) {
+  install.packages("car",repos="https://cloud.r-project.org")
+  library(car)
+}
+vif(out.lm)
+```
+We would remove the predictor with the largest VIF, so long as that VIF is greater than 5 or 10 (we'll use 10 here): `J.size`. (Then...`J.C`. Then all is fine.)
+```{r}
+out.lm    = lm(resp.train~.-J.size,data=pred.train)
+vif(out.lm)
+out.lm    = lm(resp.train~.-J.size-J.C,data=pred.train)
+vif(out.lm)
+resp.pred = predict(out.lm,newdata=pred.test)
+mean((resp.pred-resp.test)^2)
+```

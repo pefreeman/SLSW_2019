@@ -175,6 +175,41 @@ resp.pred =<span class="st"> </span><span class="kw">predict</span>(out.lm,<span
 <span class="kw">mean</span>((resp.pred<span class="op">-</span>resp.test)<span class="op">^</span><span class="dv">2</span>)                   <span class="co"># Compute MSE</span></code></pre></div>
 <pre><code>## [1] 0.2912057</code></pre>
 </div>
+<div id="last-point-variance-inflation-factor-vif" class="slide section level1">
+<h1>Last Point: Variance Inflation Factor (VIF)</h1>
+<p>An example:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="cf">if</span> ( <span class="kw">require</span>(car) <span class="op">==</span><span class="st"> </span><span class="ot">FALSE</span> ) {
+  <span class="kw">install.packages</span>(<span class="st">&quot;car&quot;</span>,<span class="dt">repos=</span><span class="st">&quot;https://cloud.r-project.org&quot;</span>)
+  <span class="kw">library</span>(car)
+}</code></pre></div>
+<pre><code>## Loading required package: car</code></pre>
+<pre><code>## Loading required package: carData</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">vif</span>(out.lm)</code></pre></div>
+<pre><code>##     mag.i    col.Vi    col.iJ    col.JH       V.G     V.M20       V.C 
+##  2.756072  2.218102  2.022101  1.394114  3.602386  4.013389  4.820926 
+##    V.size       J.G     J.M20       J.C    J.size       H.G     H.M20 
+##  2.277756 14.765384  9.579002 10.317877 24.495826 11.835777  8.824322 
+##       H.C    H.size 
+##  9.785405 23.655462</code></pre>
+<p>We would remove the predictor with the largest VIF, so long as that VIF is greater than 5 or 10 (we’ll use 10 here): <code>J.size</code>. (Then…<code>J.C</code>. Then all is fine.)</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">out.lm    =<span class="st"> </span><span class="kw">lm</span>(resp.train<span class="op">~</span>.<span class="op">-</span>J.size,<span class="dt">data=</span>pred.train)
+<span class="kw">vif</span>(out.lm)</code></pre></div>
+<pre><code>##     mag.i    col.Vi    col.iJ    col.JH       V.G     V.M20       V.C 
+##  2.723546  2.197423  2.017298  1.388289  3.403642  3.981893  4.819077 
+##    V.size       J.G     J.M20       J.C       H.G     H.M20       H.C 
+##  2.105526  5.750131  9.578948 10.268810  5.825665  8.795327  9.771578 
+##    H.size 
+##  3.842119</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">out.lm    =<span class="st"> </span><span class="kw">lm</span>(resp.train<span class="op">~</span>.<span class="op">-</span>J.size<span class="op">-</span>J.C,<span class="dt">data=</span>pred.train)
+<span class="kw">vif</span>(out.lm)</code></pre></div>
+<pre><code>##    mag.i   col.Vi   col.iJ   col.JH      V.G    V.M20      V.C   V.size 
+## 2.721671 2.196184 2.013184 1.388216 3.398239 3.980706 4.693876 2.105267 
+##      J.G    J.M20      H.G    H.M20      H.C   H.size 
+## 5.734930 7.416256 5.815876 7.646415 4.305874 3.842097</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">resp.pred =<span class="st"> </span><span class="kw">predict</span>(out.lm,<span class="dt">newdata=</span>pred.test)
+<span class="kw">mean</span>((resp.pred<span class="op">-</span>resp.test)<span class="op">^</span><span class="dv">2</span>)</code></pre></div>
+<pre><code>## [1] 0.2883317</code></pre>
+</div>
 
   <!-- dynamically load mathjax for compatibility with self-contained -->
   <script>
