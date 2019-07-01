@@ -14,6 +14,8 @@ The Setting
 
 (Figure 4.2, *Introduction to Statistical Learning* by James et al.)
 
+Suppose your response is categorical and has two possible values (`TRUE` and `FALSE`, `Vanilla` and `Chocolate`, `Fiction` and `Non-Fiction`). We identify one value as "Class 0" and one as "Class 1." A baseline statistical model to learn the association between predictor variables and a binary response variable is *logistic regression*.
+
 - To the left is a linear regression fit. It is not limited to lie within the range [0,1].
 
 - To the right is a logisitic regression fit.
