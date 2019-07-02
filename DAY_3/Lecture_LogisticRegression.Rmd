@@ -60,6 +60,27 @@ $$
 $$
 Numerical optimization means the logistic regression runs more slowly than linear regression.
 
+Logistic Regression: Inference
+===
+
+A major motivating factor underlying the use of logistic regression, and indeed all generalized linear models, is that one can perform inference...e.g., how does the response change when we change a predictor by one unit?
+
+For linear regression, the answer to the question posed above is straightforward.
+
+For logistic regression, it is a little less straightforward, because the predicted response varies non-linearly with the predictor variable values. One convention is to fall back upon the concept of "odds."
+
+Let's say that the predicted response is 0.8 given a particular predictor variable value. (For simplicity, let's assume we have just one predictor variable.) That means that we expect that if we were to repeatedly sample response values given that predictor variable values, we would expect class 1 to appear four times as often as class 0:
+$$
+O = \frac{E[Y \vert X]}{1-E[Y \vert X]} = \frac{0.8}{1-0.8} = 4 = e^{\beta_0+\beta_1X} \,.
+$$
+Thus we say that for the given predictor variable value, the odds $O$ are 4 (or 4-1) in favor of class 1.
+
+How does the odds change if I change the value of a predictor variable by one unit?
+$$
+e^{\beta_0+\beta_1(X+1)} = e^{\beta_0+\beta_1X}e^{\beta_1} = e^{\beta_1}O \,.
+$$
+For every unit change in $X$, the odds change by a factor $e^\beta_1$.
+
 Logistic Regression: Example
 ===
 

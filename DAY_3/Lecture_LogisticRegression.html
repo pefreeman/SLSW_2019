@@ -93,6 +93,18 @@ Y \vert X_1,\ldots,X_p \sim {\rm Binomial}(n=1,p=E[Y\vert X_1,\ldots,X_p]) \,.
 \left( \prod_{i: Y_i=1} E[Y \vert X_{1,i},\ldots,X_{p,i}] \right) \left( \prod_{i: Y_i=0} (1 - E[Y \vert X_{1,i},\ldots,X_{p,i}]) \right) \,.
 \]</span> Numerical optimization means the logistic regression runs more slowly than linear regression.</p>
 </div>
+<div id="logistic-regression-inference" class="slide section level1">
+<h1>Logistic Regression: Inference</h1>
+<p>A major motivating factor underlying the use of logistic regression, and indeed all generalized linear models, is that one can perform inference…e.g., how does the response change when we change a predictor by one unit?</p>
+<p>For linear regression, the answer to the question posed above is straightforward.</p>
+<p>For logistic regression, it is a little less straightforward, because the predicted response varies non-linearly with the predictor variable values. One convention is to fall back upon the concept of “odds.”</p>
+<p>Let’s say that the predicted response is 0.8 given a particular predictor variable value. (For simplicity, let’s assume we have just one predictor variable.) That means that we expect that if we were to repeatedly sample response values given that predictor variable values, we would expect class 1 to appear four times as often as class 0: <span class="math display">\[
+O = \frac{E[Y \vert X]}{1-E[Y \vert X]} = \frac{0.8}{1-0.8} = 4 = e^{\beta_0+\beta_1X} \,.
+\]</span> Thus we say that for the given predictor variable value, the odds <span class="math inline">\(O\)</span> are 4 (or 4-1) in favor of class 1.</p>
+<p>How does the odds change if I change the value of a predictor variable by one unit? <span class="math display">\[
+e^{\beta_0+\beta_1(X+1)} = e^{\beta_0+\beta_1X}e^{\beta_1} = e^{\beta_1}O \,.
+\]</span> For every unit change in <span class="math inline">\(X\)</span>, the odds change by a factor <span class="math inline">\(e^\beta_1\)</span>.</p>
+</div>
 <div id="logistic-regression-example" class="slide section level1">
 <h1>Logistic Regression: Example</h1>
 <p>The dataset that we read in below contains magnitude and redshift data for 500 quasars and 500 stars. The idea is to learn a classifier that can discriminate between quasars and stars with a low misclassification rate.</p>
