@@ -1,0 +1,138 @@
+---
+title: "Support Vector Machines"
+author: "Peter Freeman (2019 SLSW)"
+date: "8 July 2019"
+output: 
+  slidy_presentation:
+    font_adjustment: -1
+---
+
+The Short Version
+===
+
+A *support vector machine* is an enigmatically named machine learning algorithm for classification (although some use a regression variant of SVM as well).
+
+SVM transforms predictor data into a *higher dimensional space* and in that space constructs a linear boundary (i.e., a hyperplane) that optimally separates instances of two classes. (Note that SVM is not designed to tackle analyses in which the response has $K > 2$ classes!)
+
+Let's build up SVM qualitatively, one layer at a time...
+
+Maximum Margin Classifier
+===
+
+<center>![](http://www.stat.cmu.edu/~pfreeman/Figure_9.3.png){width=40%}</center>
+
+(Figure 9.3, *Introduction to Statistical Learning* by James et al.)
+
+The *maximum margin classifier* determines the linear boundary (or "separating hyperplane") in the native space of the predictor data that has the largest *minimum* distance to a training datum. The MMC is very sensitive to the choice of training data, and in the end is not useful in real-life classification settings, as it requires a complete separation between instances of the two classes.
+
+(But while we are here: look at the three short line segments that are perpendicular to the boundary. These are *support vectors*: they "hold up," or support, the linear boundary.)
+
+Support Vector Classifier
+===
+
+<center>![](http://www.stat.cmu.edu/~pfreeman/Figure_9.7.png){width=60%}</center>
+
+(Figure 9.7, *Introduction to Statistical Learning* by James et al.)
+
+The *support vector classifier* improves upon the MMC by allowing instances of the two classes to overlap. (Good!) It still determines a linear boundary in the native space of the predictor data, and adds to MMC a tuning parameter (conventionally $C$ or "cost") that controls for the rate of boundary violations. As $C \rightarrow \infty$, the SVC becomes more tolerant to violations.
+
+The figure above shows modeled linear boundaries given four different values of $C$, from more tolerant of violations at upper left (high $C$) to less tolerant at lower right (low $C$). Determining the appropriate value of $C$ requires splitting training data into training and validation datasets, or applying cross-validation with the training set data.
+
+Support Vector Machine
+===
+
+<center>![](http://www.stat.cmu.edu/~pfreeman/Figure_9.9.png){width=60%}</center>
+
+(Figure 9.9, *Introduction to Statistical Learning* by James et al.)
+
+And finally, the *support vector machine*. SVM is an extension to SVC that, like SVC, utilizes a linear boundary that can be violated, but that defines that boundary in a higher-dimensional space.
+
+Example: SVM with a polynomial kernel of degree 2 transforms a space where $p=2$ to one where $p'=5$:
+$$
+\{X_1,X_2\} \rightarrow \{X_1,X_2,X_1^2,X_2^2,X_1X_2\}
+$$
+
+What is a kernel, you ask. The mathematical details are complex are will not be recreated here, particularly as they don't particularly help one build intuition about what SVM does. Ultimately, SVM
+
+- determines an optimal linear boundary in a space of dimensionality $> p$;
+- uses inner (or dot) products to solve for that linear boundary; and
+- exploits the fact that evaluating kernel functions in the native $p$-dimensional space of the data is equivalent (and far less computationally intensive!) to explicitly transforming the data vectors to a higher-dimensional space and computing inner products there. (This is the so-called "kernel trick.")
+
+Different kernels encapsulate different mappings to higher dimensional spaces and thus lead to the creation of *different boundaries*. (Hence SVM with different kernel choices will yield different test set MCR values!) Common kernel choices are `linear`, `polynomial`, and `radial`. Note that each has tuning parameters.
+
+SVM: Example
+===
+
+Below we load in some variable star data. Much of the detail is unimportant, and so is consigned to an "unechoed" code chunk. (You can see the contents of this chunk if you view the contents of the `R Markdown` file. There are two important things to note: (1) in SVM, it is convention to standardize each predictor variable, and (2) the library that we use demands that the predictor and response variables be bound into a single data frame.)
+
+The data represent two classes: contact binary stars (or `CB`s) and non-contact binary stars (or `NON-CB`s). In pre-processing, we retain 500 examples of each, for computational efficiency. (Remember: SVM is a relatively slow modeling algorithm.) The research question is: can we learn a model that discriminates between the two classes?
+```{r echo=FALSE}
+load(url("https://raw.githubusercontent.com/pefreeman/36-290/master/EXAMPLE_DATASETS/TD_CLASS/css_data.Rdata"))
+# Eliminate the max.slope column (the 11th column), which has infinities.
+predictors = predictors[,-11]
+# Cut the CB and NON-CB class sizes to 5000 samples each.
+set.seed(303)
+w = which(response==1)
+s = sample(length(w),500)
+predictors.cb = predictors[w[s],]
+response.cb   = response[w[s]]
+w = which(response!=1)
+s = sample(length(w),500)
+predictors.noncb = predictors[w[s],]
+response.noncb   = response[w[s]]
+predictors = rbind(predictors.cb,predictors.noncb)
+response   = c(response.cb,response.noncb)
+response.new = rep("CB",length(response))
+w = which(response!=1)
+response.new[w] = "NON-CB"
+response = factor(response.new,levels=c("NON-CB","CB"))
+```
+```{r}
+predictors = data.frame(scale(predictors)) # point 1 above
+df = cbind(predictors,response)            # point 2 above
+
+set.seed(101)
+s = sample(nrow(df),round(0.7*nrow(df)))
+df.train = df[s,]
+df.test  = df[-s,]
+```
+
+SVM: Linear Kernel
+===
+
+The implementation of SVM that we will examine is packaged in the enigmatically named <tt>e1071</tt> library. (Its name comes from the coding for the Institute of Statistics and Probability Theory at the Technische Universitat Wien, in Vienna. It's like us calling a package <tt>cmustats</tt>. Which we should.) Below, we code a support vector classifier (meaning, we use <tt>kernel="linear"</tt>). We use the `tune()` function with a representative sequence of potential costs $C$, then we extract the best model. (`tune()` performs 10-fold CV by default. To change the number of folds or other constants governing the implementation of CV, use the `tune.control()` function.)
+
+Note: there is a tradeoff between computational efficiency and how finely spaced the cost grid is!
+```{r}
+if ( require(e1071) == FALSE ) {
+  install.packages("e1071",repos="https://cloud.r-project.org")
+  library(e1071)
+}
+set.seed(202)  # why? because tune() does cross-validation on the training set, so random sampling is involved!
+C = 10^seq(-2,2,by=0.2)
+out.svmcv = tune(svm,response~.,data=df.train,kernel="linear",
+                 ranges=list(cost=C),tunecontrol=tune.control(cross=5))
+cat("The estimated optimal value for C is ",as.numeric(out.svmcv$best.parameters),"\n")
+resp.pred = predict(out.svmcv$best.model,newdata=df.test)
+mean(resp.pred!=df.test$response)
+table(resp.pred,df.test$response)
+```
+
+SVM: Radial Kernel
+===
+
+Implementing a radial kernel means there are two changes: `kernel` is set to `radial` (easy), and an additional tuning parameter, `gamma`, is added to the list of tuning parameters (also easy, but defining a good range of values to try can take a little time).
+```{r}
+set.seed(202)
+C = 10^seq(-2,2,by=0.4)
+g = 10^seq(-2,2,by=0.4)
+out.svmcv = tune(svm,response~.,data=df.train,kernel="radial",
+                 ranges=list(cost=C,gamma=g),tunecontrol=tune.control(cross=5))
+cat("The estimated optimal values for C and gamma are ",as.numeric(out.svmcv$best.parameters),"\n")
+resp.pred = predict(out.svmcv$best.model,newdata=df.test)
+mean(resp.pred!=df.test$response)
+table(resp.pred,df.test$response)
+```
+For these particular data, moving from SVC to radial SVM does not lead to a substantial improvement in test set MSE!
+
+An exercise left to the reader: what about a polynomial kernel? (Note that the tuning parameters are `cost` and `degree`.)
