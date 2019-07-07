@@ -90,6 +90,17 @@ ggplot(data=data.frame(resp.test,pred),mapping=aes(x=resp.test,y=pred)) +
   geom_abline(intercept=0,slope=1,color="red")
 ```
 
+Gradient Boosting: Variable Importance
+===
+
+Like random forest, boosting allows one to measure variable importance. For `xgboost`, this importance measure is called the "gain," defined as the "fractional contribution of each feature to the model based on the total gain of
+this feature’s splits. Higher percentage means a more important predictive feature."
+```{r fig.align="center",fig.height=4.5,fig.width=4.5}
+importance = xgb.importance(feature_names=names(pred.train),model=out.xgb)
+xgb.plot.importance(importance_matrix=importance)
+```
+Note that one can also plot trees using `xgb.plot.tree()`. (Doing so requires the installation of the `DiagrammeR` package.)
+
 Gradient Boosting: Binary Classification vs. Regression
 ===
 
