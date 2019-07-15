@@ -1,5 +1,5 @@
 
-The 2019 Statistical Learning Summer Workshop is an opportunity for Carnegie Mellon Graduate students from outside of statistics to gain experience in statistical learning, the attempt to discover underlying associations between variables in a dataset.
+The 2019 Statistical Learning Summer Workshop is an opportunity for Carnegie Mellon graduate students from outside of statistics to gain experience in statistical learning, the attempt to discover underlying associations between variables in a dataset.
 
 This workshop is made possible thanks to the support of
 
